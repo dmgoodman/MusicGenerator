@@ -1,7 +1,5 @@
 import os
-import sys
 import pretty_midi
-import numpy as np
 
 cwd_new = os.getcwd() + "/midi_audio"
 for midifile in os.listdir(cwd_new):
