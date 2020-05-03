@@ -1,3 +1,7 @@
+import random
+
+#---------------------------------------------------------------------
+
 def preprocess_firstorder(notes_list):
     notesDict = {}
     for i in range(len(notes_list)):
@@ -14,6 +18,8 @@ def preprocess_firstorder(notes_list):
 
     return notesDict
 
+#---------------------------------------------------------------------
+
 def preprocess(notes_list, order):
     notesDict = {}
     for i in range(len(notes_list)):
@@ -22,14 +28,50 @@ def preprocess(notes_list, order):
             if j < order - 1:
                 current_notes = tuple(notes_list[i - (order - j)]) if i - (order - j) >= 0 else tuple([])
                 workingDict[current_notes] = workingDict.get(current_notes, {})
-                print(current_notes, end="")
             else:
                 current_notes = tuple(notes_list[i - (order - j)]) if i - (order - j) >= 0 else tuple([])
                 workingDict[current_notes] = workingDict.get(current_notes, 0) + 1
-                print(current_notes)
             workingDict = workingDict[current_notes]
 
     return notesDict
+
+def get_order(markov_dict):
+    order = 0
+    while type(markov_dict) is not int:
+        markov_dict = markov_dict[()]
+        order += 1
+    return order
+
+#---------------------------------------------------------------------
+
+def generate(markov_dict, num_notes):
+    order = get_order(markov_dict)
+    
+    notes = []
+    for i in range(order - 1):
+        notes.append(())
+
+    for i in range(num_notes):
+        working_dict = markov_dict
+        for j in range(order - 1):
+            working_dict = working_dict[notes[i + j]]
+
+        print("LOP " + str(working_dict))
+        total = 0
+        for key in working_dict:
+            total += working_dict[key]
+        seed = random.randint(0, total - 1)
+
+        total = 0
+        for key in working_dict:
+            total += working_dict[key]
+            if seed < total:
+                notes.append(key)
+                break
+
+    return notes
+
+#---------------------------------------------------------------------    
 
 def main():
     notes = [ [1],[2],[3],[4],[1],[4],[2],[2],[3],[4],[1],[4],[2],[2],[3],[4],[1],[4],[2],
