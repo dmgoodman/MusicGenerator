@@ -144,6 +144,8 @@ def main(audio_dir=Path('./midi_audio'), num_workers=10):
 
     # put midi files (and output files) on to file queue
     processed_dir = audio_dir.parent / 'midi_processed'
+    if not processed_dir.exists():
+        processed_dir.mkdir()
     for midi_path in audio_dir.glob('**/*.mid'):
         output_path = (processed_dir / midi_path.stem).with_suffix('.json')
         file_q.put((midi_path, output_path))
