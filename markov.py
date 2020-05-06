@@ -1,6 +1,7 @@
 import random
 import json
 import os
+from pathlib import Path
 
 #---------------------------------------------------------------------
 
@@ -106,8 +107,15 @@ def generate_from_directory(directory, order, num_notes):
 #---------------------------------------------------------------------
 
 def main():
-    notes = generate_from_directory('midi_discretized', 3, 10000)
-    print(notes)
+    generated_path = os.getcwd() + '/midi_generated'
+    for i in range(1, 4):
+        json_list = {
+            'order': i,
+            'notes': generate_from_directory('midi_discretized', i, 5000)
+        }
+        out_file = open(generated_path + '/order_{}.json'.format(i), 'w')
+        json.dump(json_list, out_file)
+
 
 #---------------------------------------------------------------------
 
