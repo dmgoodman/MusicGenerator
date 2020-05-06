@@ -1,5 +1,6 @@
 import random
 import json
+import os
 
 #---------------------------------------------------------------------
 
@@ -94,10 +95,21 @@ def generate_from_json_files(json_files, order, num_notes):
     notes = generate(notes_dict, num_notes)
 
     return notes
-    
+
+def generate_from_directory(directory, order, num_notes):
+    json_files = []
+    for file in os.listdir(directory):
+        if file.endswith('.json'):
+            json_files.append(directory + '/' + file)
+    return generate_from_json_files(json_files, order, num_notes)
 
 #---------------------------------------------------------------------
 
 def main():
-    pass
-    
+    notes = generate_from_directory('midi_discretized', 3, 10000)
+    print(notes)
+
+#---------------------------------------------------------------------
+
+if __name__ == "__main__":
+    main()
