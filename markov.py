@@ -1,4 +1,5 @@
 import random
+import json
 
 #---------------------------------------------------------------------
 
@@ -35,6 +36,8 @@ def preprocess(notes_list, order):
 
     return notesDict
 
+#---------------------------------------------------------------------
+
 def get_order(markov_dict):
     order = 0
     while type(markov_dict) is not int:
@@ -55,8 +58,7 @@ def generate(markov_dict, num_notes):
         working_dict = markov_dict
         for j in range(order - 1):
             working_dict = working_dict[notes[i + j]]
-
-        print("LOP " + str(working_dict))
+            
         total = 0
         for key in working_dict:
             total += working_dict[key]
@@ -71,10 +73,31 @@ def generate(markov_dict, num_notes):
 
     return notes
 
-#---------------------------------------------------------------------    
+#---------------------------------------------------------------------
+
+def json_to_notes_list(json_file):
+    file = open(json_file, "r")
+    data = json.load(file)
+    return data['notes']
+
+#---------------------------------------------------------------------
+
+def generate_from_json_files(json_files, order, num_notes):
+    full_notes_list = []
+    
+    for file in json_files:
+        notes_list = json_to_notes_list(file)
+        for notes in notes_list:
+            full_notes_list.append(notes)
+
+    notes_dict = preprocess(full_notes_list, order)
+    notes = generate(notes_dict, num_notes)
+
+    return notes
+    
+
+#---------------------------------------------------------------------
 
 def main():
-    notes = [ [1],[2],[3],[4],[1],[4],[2],[2],[3],[4],[1],[4],[2],[2],[3],[4],[1],[4],[2],
-              [1],[1],[1],[1],[2],[3],[4],[1],[4],[2],[2],[3],[4],[1],[4],[2],[2],[3],[4],
-              [1],[4],[2],[1],[1] ]
-    return [preprocess(notes, 1), preprocess(notes, 2), preprocess(notes, 3), preprocess(notes, 4)]
+    pass
+    
