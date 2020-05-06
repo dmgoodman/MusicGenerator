@@ -1,19 +1,32 @@
 import pretty_midi
+import json
+import os
 
-midi_obj = pretty_midi.PrettyMIDI()
-piano_program = pretty_midi.instrument_name_to_program("Electric Piano 1")
-piano = pretty_midi.Instrument(program = piano_program)
+def json_to_notes_list(json_file):
+    file = open(json_file, "r")
+    data = json.load(file)
+    return data['notes']
 
-s = 0
-e = 0.5
+def main():
+    generated_path = os.getcwd() + '/midi_generated'
+    for file in os.listdir('midi_generated'):
+        if file.endswith('.json'):
+            midi_obj = pretty_midi.PrettyMIDI()
+            piano_program = pretty_midi.instrument_name_to_program('Electric Piano 1')
+            piano = pretty_midi.Instrument(program = piano_program)
+            s = 0
+            e = 0.2
+            notes_list = json_to_notes_list(generated_path + '/' + file)
+            for chord in notes_list:
+                if chord:
+                    for note in chord:
+                        note = pretty_midi.Note(velocity = 60, pitch = note, start = s, end = e)
+                        piano.notes.append(note)
+                s += 0.2
+                e += 0.2
 
-for note_number in [55, 60, 65, 60, 70]:
-    note = pretty_midi.Note(velocity = 60, pitch = note_number, start = s, end = e)
-    piano.notes.append(note)
-    s += 0.5
-    e += 0.5
+            midi_obj.instruments.append(piano)
+            midi_obj.write(generated_path + '/' + file[:-5] + '.mid')
 
-midi_obj.instruments.append(piano)
-# key = pretty_midi.KeySignature(0, 0)
-# midi_obj.key_signature_changes(key)
-midi_obj.write("test_generated.mid")
+if __name__ == "__main__":
+    main()
