@@ -65,14 +65,14 @@ def generate(markov_dict, num_notes):
         for key in working_dict:
             total += working_dict[key]
         seed = random.randint(0, total - 1)
-
+        print(len(working_dict))
         total = 0
         for key in working_dict:
             total += working_dict[key]
             if seed < total:
                 notes.append(key)
                 break
-
+        
     return notes
 
 #---------------------------------------------------------------------
@@ -108,7 +108,8 @@ def generate_from_directory(directory, order, num_notes):
 
 def main():
     generated_path = os.getcwd() + '/midi_generated'
-    for i in range(1, 4):
+    for i in range(1, 6):
+        print("-----------------------")
         json_list = {
             'order': i,
             'notes': generate_from_directory('midi_discretized', i, 5000)
