@@ -56,6 +56,7 @@ def generate(markov_dict, num_notes):
     for i in range(order - 1):
         notes.append(())
 
+    options = 0
     for i in range(num_notes):
         working_dict = markov_dict
         for j in range(order - 1):
@@ -65,13 +66,17 @@ def generate(markov_dict, num_notes):
         for key in working_dict:
             total += working_dict[key]
         seed = random.randint(0, total - 1)
-        print(len(working_dict))
+
+        options += len(working_dict)
+        
         total = 0
         for key in working_dict:
             total += working_dict[key]
             if seed < total:
                 notes.append(key)
                 break
+
+    print(str(options / num_notes))
         
     return notes
 
@@ -89,6 +94,8 @@ def generate_from_json_files(json_files, order, num_notes):
     
     for file in json_files:
         notes_list = json_to_notes_list(file)
+        for i in range(order):
+            notes_list.append([])
         for notes in notes_list:
             full_notes_list.append(notes)
 
@@ -108,15 +115,14 @@ def generate_from_directory(directory, order, num_notes):
 
 def main():
     generated_path = os.getcwd() + '/midi_generated'
-    for i in range(1, 6):
+    for i in range(1, 10):
         print("-----------------------")
         json_list = {
             'order': i,
-            'notes': generate_from_directory('midi_discretized', i, 5000)
+            'notes': generate_from_directory('midi_discretized', i, 1000000)
         }
         out_file = open(generated_path + '/order_{}.json'.format(i), 'w')
         json.dump(json_list, out_file)
-
 
 #---------------------------------------------------------------------
 
