@@ -5,11 +5,11 @@ Using MIDI audio files of piano compositions by classical composers, such as Bac
 
 ## Folder Contents
 
-midi_audio: Contains training audio files collected from online sources.
-midi_discretized: Contains completely preprocessed data in discrete, non-overlapping intervals
-midi_generated: Contains Markov-generated MIDI files along with their .json representation
-midi_messages: Contains all messages of training audio files (used for reference only)
-midi_processed: Contains first step preprocessed data (removed overlapping intervals).
+midi_audio: Contains training audio files collected from online sources.  
+midi_discretized: Contains completely preprocessed data in discrete, non-overlapping intervals.  
+midi_generated: Contains Markov-generated MIDI files along with their .json representation.  
+midi_messages: Contains all messages of training audio files (used for reference only).  
+midi_processed: Contains first step preprocessed data (removed overlapping intervals).  
 
 ## Authors
 
